@@ -47,3 +47,29 @@ if(build1 + ' ' + build2 == bestmatch) {
 } else {
     console.log(wrong)
 }
+
+var a = 1
+var b = '1'
+ if(a == b){
+    console.log(correct)
+ } else{
+    console.log(wrong)
+ }
+
+ if(a === b){
+    console.log(correct)
+ } else{
+    console.log(wrong)
+ }
+
+ if(a != b){
+    console.log(correct)
+ } else{
+    console.log(wrong)
+ }
+
+ if(a !== b){
+    console.log(correct)
+ } else{
+    console.log(wrong)
+ }

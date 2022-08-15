@@ -4,6 +4,12 @@ var z = 3
 var correct = 'Điều kiện đúng!'
 var fallse = 'Điều kiện sai!'
 
+/**
+ *  &&: và 
+ *  ||: hoặc
+ *  !: phủ định
+ */
+
 if(x + y == z && y > x){
     console.log (correct)
 }

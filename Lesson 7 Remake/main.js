@@ -10,3 +10,4 @@ setTimeout(function(){
 setInterval(function(){
     console.log(infinity + Math.random);
 }, 100)
+prompt('đây là 1 cái promt')
