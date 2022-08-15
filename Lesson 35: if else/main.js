@@ -22,7 +22,7 @@ if (day === 2){
     console.log('Hôm nay là chủ nhật')
 }
  else {
-    console.log(' ¯\_( ツ )_/¯')
+    console.log(' ¯\\_( ツ )_/¯')
  }
 
  var month = 69
@@ -64,5 +64,5 @@ else if (month === 1 ){
     console.log('Hôm nay là tháng 1')
 }
  else {
-    console.log('¯\_( ツ )_/¯')
+    console.log('¯\\_( ツ )_/¯')
  }

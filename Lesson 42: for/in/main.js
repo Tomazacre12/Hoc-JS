@@ -3,7 +3,7 @@ var hoSo = {
     tuoi: '3000',
     diaChi: 'Hà nội'
 }
-var hell = 'Hecatia Lapislazuli'
+var hell = 'doinhucac'
 
 for (var key in hoSo){  
     console.log(hoSo[key])

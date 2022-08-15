@@ -34,4 +34,5 @@ switch(year){
     case 2021:
     case 2022:
         console.log('Lệnh Hòa')
+        default: console.log('diệt vong')
 }
