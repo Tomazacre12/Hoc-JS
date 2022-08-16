@@ -36,14 +36,14 @@ var isFree = courses.every(function(course, index){
 
 console.log(isFree)
 
-var course = courses.find(function(course, index){
-    return course.name === 'CSS'
+var course = courses.find(function(course, index){  
+    return course.name === 'CSS'    //tìm phần tử có tên CSS
 })
 
 console.log(course)
 
 var course = courses.filter(function(course, index){
-    return course.name === 'CSS'
+    return course.name === 'CSS'    //tìm tất cả phần tử có tên CSS
 })
 
 console.log(course)

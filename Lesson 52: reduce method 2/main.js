@@ -54,3 +54,4 @@ var flatArray = depthArray.reduce(function(flatOutput, depthItem){
 }, [])
 console.log(depthArray)
 console.log(flatArray)
+

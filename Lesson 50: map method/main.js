@@ -26,12 +26,12 @@ var courses =[
     },
 ]
 
-function courseHandler(courses){
+function courseHandler(course){
     return{
-        id: courses.id,
-        name: `Khóa học: ${courses.name}`,
-        coin: courses.coin,
-        coinText: `Giá ${courses.coin}`
+        id: course.id,
+        name: `Khóa học: ${course.name}`,
+        coin: course.coin,
+        coinText: `Giá ${course.coin}`
     }
 }
 
@@ -39,10 +39,10 @@ var newCourses = courses.map(courseHandler)
 
 console.log(newCourses)
 
-function courseHandler2(courses, index){
+function courseHandler2(courses){
     return `<h2>${courses.name}</h2>`
 }
 
 var htmlCourses = courses.map(courseHandler2)
 
-console.log(htmlCourses.join(''))
+console.log(htmlCourses.join(' '))
