@@ -1,29 +1,84 @@
 function Validator(options){
+    function getParent(element, selector){
+        while(element.parentElement){
+            if(element.parentElement.matches(selector)){
+                return element.parentElement
+            }
+            element = element.parentElement
+        }
+    }
     var selectorRules ={}
     function validate(inputElement, rule){
-            var errorElement = inputElement.parentElement.querySelector(options.errorSelector)
+            var errorElement = getParent(inputElement,options.formGroupSelector).querySelector(options.errorSelector)
             var errorMessage 
             var rules = selectorRules[rule.selector]
             for (var i = 0; i < rules.length; ++i){
-               errorMessage = rules[i](inputElement.value)
+                switch(inputElement.type){
+                    case 'checkbox':
+                    case 'radio':
+                        errorMessage = rules[i](
+                            formElement.querySelector(rule.selector + ':checked')
+                        ) 
+                        break
+                    default:
+                        errorMessage = rules[i](inputElement.value)
+                }
                if (errorMessage) break
             }
         if (errorMessage){
             errorElement.innerText = errorMessage
-            inputElement.parentElement.classList.add('invalid')   
+            getParent(inputElement,options.formGroupSelector).classList.add('invalid')   
         } else{
-            inputElement.parentElement.classList.remove('invalid')   
+            getParent(inputElement,options.formGroupSelector).classList.remove('invalid')   
             errorElement.innerText = ''
         }
+        return !errorMessage
     }
    var formElement = document.querySelector(options.form)
    if (formElement){
         formElement.onsubmit = function (e) {
             e.preventDefault()
+
+            var isFormValid = true
+
             options.rules.forEach(function(rule){ 
                 var inputElement = formElement.querySelector(rule.selector)
-                validate(inputElement,rule)
-            })       
+                var isValid = validate(inputElement,rule)
+                if(!isValid){
+                    isFormValid = false
+                }
+            })    
+            if (isFormValid)  {
+                // trường hợp submit với javascript
+                if (typeof options.onsubmit === 'function'){
+                    var enableInputs = formElement.querySelectorAll('[name]:not([disabled])')
+                    var formValues = Array.from(enableInputs).reduce(function(values,input){
+                        
+                        switch(input.type){
+                            case 'radio':
+                                if (input.matches(':checked')){
+                                    values[input.name] = input.value
+                                } 
+                                break
+                            case 'checkbox':
+                                if(!input.matches(':checked')) return values
+                                if(!Array.isArray(values[input.name])){
+                                    values[input.name] = []
+                                }
+                                values[input.name].push(input.value)
+                                break
+                            default:
+                                values[input.name] = input.value
+                        }
+
+                        return values
+                    },{})
+                    options.onsubmit(formValues)
+                }// trường hợp submit với hành vi mặc định
+                else{
+                    formElement.submit()
+                }
+            } 
         }
         options.rules.forEach(function(rule){   
             if (Array.isArray(selectorRules[rule.selector])){
@@ -31,20 +86,23 @@ function Validator(options){
             } else {
                 selectorRules[rule.selector] = [rule.test]
             }
-            var inputElement = formElement.querySelector(rule.selector)
-            if(inputElement){
-                // xử lý trường hợp blur khỏi input
-                inputElement.onblur = function(){
-                   validate(inputElement,rule)
-                }
-                // xử lý mỗi khi người dùng nhập vào input
-                inputElement.oninput = function(){
-                    var errorElement = inputElement.parentElement.querySelector('.form-message')
+            var inputElements = formElement.querySelectorAll(rule.selector)
 
-                    inputElement.parentElement.classList.remove('invalid')   
-                    errorElement.innerText = ''
-                }
-            }
+            Array.from(inputElements).forEach(function(inputElement){
+                 // xử lý trường hợp blur khỏi input
+                 inputElement.onblur = function(){
+                    validate(inputElement,rule)
+                 }
+                 // xử lý mỗi khi người dùng nhập vào input
+                 inputElement.oninput = function(){
+                     var errorElement = getParent(inputElement,options.formGroupSelector).querySelector('.form-message')
+ 
+                     getParent(inputElement,options.formGroupSelector).classList.remove('invalid')   
+                     errorElement.innerText = ''
+                 }
+            })
+
+          
         })
    }
 }
@@ -52,7 +110,7 @@ Validator.isRequired = function(selector, message){
     return{
         selector: selector,
         test: function(value){
-            return value.trim() ? undefined: message || 'Vui lòng nhập trường này'
+            return value ? undefined: message || 'Vui lòng nhập trường này'
         }
     }
 }
@@ -69,7 +127,7 @@ Validator.minLength = function(selector, min, message){
     return{
         selector: selector,
         test: function(value){
-            return value.length >= min ? undefined: message || `Vui lòng nhập tối thiểu ${min} kí tự`
+            return value.length >= min ? undefined: message || `Tối thiểu ${min} kí tự`
         }
     }
 }

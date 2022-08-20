@@ -60,6 +60,22 @@ html {
     outline: none;
     font-size: 1.4rem;
   }
+.form-gender{
+   display: flex;
+   justify-content: space-around;
+   font-size: 15px;
+}
+.form-gender-center{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.form-gender-center input:hover{
+  cursor: pointer;
+}
+.form-gender-center p{
+  margin: 0 5px;
+}
 .form-control:hover {
     border-color: red;
   }
