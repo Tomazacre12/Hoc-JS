@@ -58,6 +58,7 @@ var promise4 = new Promise(
     }
 )
 Promise.all([promise3, promise4])
+
     .then(function(Result){
         var result1 = Result[0]
         var result2 = Result[1]
