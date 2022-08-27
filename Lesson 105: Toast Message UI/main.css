@@ -21,12 +21,13 @@ html{
     min-width: 400px;
     min-height: 80px;
     background-color: white;
-    animation: slideInLeft ease 0.5s, fadeOut linear 1s 3s forwards;
+    transition: all linear 0.5s;
 }
 #toast{
     position: fixed;
     top: 32px;
     right: 32px;
+    z-index: 999999999;
 }
 @keyframes slideInLeft{
     from {
