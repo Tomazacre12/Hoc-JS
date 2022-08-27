@@ -7,7 +7,7 @@ var courses = {
     name: 'HTML/CSS',
     price: 1000,
     lesson: '111',
-    // desc: 'chỉ là 1 description rách',
+    // desc: 'huhu bố Thanh Minh đừng có vào soi code nữa :((',
     time: '1 months',
     author: 'F8'
 }
