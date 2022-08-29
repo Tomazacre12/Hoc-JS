@@ -1,0 +1,31 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Xây Dựng Website với ReactJS",
+      "description": "Khóa học ReactJS từ cơ bản tới nâng cao, kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS. Cuối khóa học này bạn sẽ sở hữu một dự án giống Tiktok.com, bạn có thể tự tin đi xin việc khi nắm chắc các kiến thức được chia sẻ trong khóa học này"
+    },
+    {
+      "name": "Cách đưa code lên GitHub và tạo GitHub Pages",
+      "description": "Xin các bạn tại F8, khi mình đọc những bài viết trên nhóm F8 thì mình thấy có nhiều bạn vẫn không biết đưa code lên GitHub, hoặc bị lỗi, hoặc có thể là những bạn mới và đặc biệt là các bạn không biết tạo GitHub Pages ( cụ thể là hiển thị ra trang web để cho mọi người xem á! ). Ok, hôm nay mình sẽ hướng dẫn cụ thể để cho những bạn không biết bấy lâu nay có thể đưa code mình lên GitHub được nhe. Mình là Kha, là một thành viên trong nhóm “Học lập trình web",
+      "id": 2
+    },
+    {
+      "name": "Lập Trình JavaScript Nâng Cao",
+      "description": "Hiểu sâu hơn về cách Javascript hoạt động, tìm hiểu về IIFE, closure, reference types, this keyword, bind, call, apply, prototype, ...",
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+.idk{
+    display: flex;
+    align-items: center;
+}
+.idk > div{
+    margin-right: 6px;
+}
