@@ -17,9 +17,10 @@ function getCourses(callback){
 function createCourse(data, callback){
     var options = {
         method: 'POST',
-        Headers:{
-            'Content-Type':'application/json'
-        },
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
         body: JSON.stringify(data)
     }
     fetch(courseApi, options)
@@ -29,14 +30,35 @@ function createCourse(data, callback){
     .then(callback)
 }
 
+function handleDeleteCourse(id){
+    var options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+    }
+    fetch(courseApi + '/' + id, options)
+    .then(function(response){
+        response.json()
+    })
+    .then(function(){
+       var courseItem = document.querySelector('.course-item-' + id)
+       if(courseItem){
+        courseItem.remove()
+       }
+    })
+}
+
 function renderCourses(courses){
     var listCoursesBlock = 
     document.querySelector('#list-courses')
     var htmls = courses.map(function(course){
         return `
-            <li>
-                <h4>${course.name}</h4>
+            <li class="course-item-${course.id}">
+                <h4 class="text-header">${course.name}</h4>
                 <p>${course.description}</p>
+                <button onclick="handleDeleteCourse(${course.id})" class="delete-btn">Delete</button>
             </li>    
         `
     })

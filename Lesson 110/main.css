@@ -1,7 +1,38 @@
 .idk{
     display: flex;
     align-items: center;
+    padding-left: 40px;
 }
 .idk > div{
     margin-right: 6px;
 }
+#create{
+    border-color: green;
+    background-color: #47d864;
+    border-radius: 2px;
+    font-weight: 600;
+}
+#create:hover{
+    border-color: green;
+    background-color: #28c948;
+    cursor: pointer;
+}
+.delete-btn{
+    border-color: red;
+    background-color: #ff623d;
+    border-radius: 2px;
+    font-weight: 600;
+}
+.delete-btn:hover{
+    border-color: red;
+    background-color: #fd4c24;
+    cursor: pointer;
+}
+#list-courses{
+    list-style: none;
+}
+.text-header{
+    font-size: 25px;
+    margin-bottom: 0;
+}
+
