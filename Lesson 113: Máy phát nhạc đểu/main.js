@@ -8,11 +8,29 @@ const cdThumb = $('.cd-thumb')
 const audio = $('#audio')
 const playBtn = $('.btn-toggle-play')
 const progress = $('#progress')
+const prevBtn = $('.btn-prev')
+const nextBtn = $('.btn-next')
+const randomBtn = $('.btn-random')
+const repeatBtn =$('.btn-repeat')
 
 const app ={
     currentIndex: 0,
     isPlaying: false,
+    isRandom: false,
+    isRepeat: false,
     songs: [
+        {
+            name: 'Bass Slut',
+            singer: 'NSFW',
+            path: './Music/Bass Slut.mp3',
+            image: './img/bassslut.jpg'
+        },
+        {
+            name: 'kỳ kỳ - cindy thái hòa x playboi càri',
+            singer: 'Trung Tâm Băng Đĩa Lậu Hải Ngoại',
+            path: './Music/kỳ kỳ.mp3',
+            image: './img/kyky.jpg'
+        },  
         {
             name: 'Bookmaker',
             singer: 'Kobaryo',
@@ -20,36 +38,23 @@ const app ={
             image: './img/kobaryo.png'
         },  
         {
-            name: 'Touhou 17.5: Reimu theme',
-            singer: 'Dự án đông phương',
-            path: './Music/reimutheme.mp3',
-            image: './img/256px-Th175_cover.jpg'
-        },
-        {
-            name: 'Touhou 17.5: tittle',
-            singer: 'Dự án đông phương',
-            path: './Music/y2mate.com - Touhou 175 OST Title Screen.mp3',
-            image: './img/256px-Th175_cover.jpg'
-        },
-        {
-            name: 'Narwhal',
-            singer: 'Gray raven',
-            path: './Music/ghostfinal4.mp3',
-            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
-        },    
-        {
-            name: 'Punishing',
-            singer: 'Gray raven',
-            path: './Music/ghostfinal3.mp3',
-            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
-        },  
-        {
             name: 'MISSION REPRISE',
-            singer: 'Higari minami',
+            singer: 'nemesis',
             path: './Music/MISSION REPRISE.mp3',
-            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
-        },  
-  
+            image: './img/missionrepsire.jpg'
+        }, 
+        {
+            name: 'Out Of Control',
+            singer: 'Diversity',
+            path: './Music/Out Of Control.mp3',
+            image: './img/outofcontrol.jpg'
+        },
+        {
+            name: 'W theme',
+            singer: 'Arknight',
+            path: './Music/W.mp3',
+            image: './img/W.jpg'
+        },
         {
             name: 'Hikari',
             singer: 'Gray raven',
@@ -66,20 +71,13 @@ const app ={
             name: 'Homu',
             singer: 'Higari minami',
             path: './Music/Tadaima Hōmu.mp3',
-            image: './img/0.jpg'
+            image: './img/homu.jpeg'
         },
         {
-            name: 'Cheatreal',
-            singer: 'T+pazolite',
-            path: './Music/y2mate.com - tpazolite  Cheatreal.mp3',
-            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
-        },
-         
-        {
-            name: 'Touhou 11: Koishi theme',
-            singer: 'T+pazolite',
-            path: './Music/y2mate.com - tpazolite  CENSORED.mp3',
-            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+            name: 'みきなつみ君へ送る唄',
+            singer: 'Tower Record',
+            path: './Music/みきなつみ君へ送る唄.mp3',
+            image: './img/lé.png'
         },
         {
             name: 'Baby dont cry',
@@ -87,6 +85,30 @@ const app ={
             path: './Music/y2mate.com - Baby dont cry  安室奈美恵full covered by コバソロ  藤川千愛.mp3',
             image: './img/maxresdefault.jpg'
         },
+        {
+            name: 'Worlds End, Girls Rondo',
+            singer: 'Yo Kaze',
+            path: './Music/Asterisk.mp3',
+            image: './img/rondo.jpg'
+        },
+        {
+            name: 'Owari No Seraph',
+            singer: 'Owari No Seraph',
+            path: './Music/Owari No Seraph Battle Theme.mp3',
+            image: './img/owari.jpg'
+        },
+        {
+            name: 'Cheatreal',
+            singer: 'T+pazolite',
+            path: './Music/y2mate.com - tpazolite  Cheatreal.mp3',
+            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+        },       
+        {
+            name: 'Touhou 11: Koishi theme',
+            singer: 'T+pazolite',
+            path: './Music/y2mate.com - tpazolite  CENSORED.mp3',
+            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+        },  
         {
             name: 'Touhou 6: Fall in the dark',
             singer: 'Alice Margatroid',
@@ -96,9 +118,9 @@ const app ={
           
     ],
     render: function(){
-        const htmls = this.songs.map(song => {
+        const htmls = this.songs.map((song, index) => {
             return `
-                <div class="song">
+                <div class="song ${index === this.currentIndex ? 'active' : ''}">
                     <div class="thumb" style="background-image: url('${song.image}')">
                     </div>
                     <div class="body">
@@ -171,12 +193,72 @@ const app ={
             const seekTime = audio.duration  / 100 * e.target.value 
             audio.currentTime = seekTime
         }
+        // next song
+        nextBtn.onclick = function(){
+            if(_this.isRandom){
+                _this.playRandomSong()
+            }else{
+                _this.nextSong()
+            }
+            audio.play()
+            _this.render()
+        }
+        // prev song
+        prevBtn.onclick = function(){
+            if(_this.isRandom){
+                _this.playRandomSong()
+            }else{
+                _this.prevSong()
+            }
+            audio.play()
+            _this.render()
+        }
+        // random song
+        randomBtn.onclick = function(e){
+            _this.isRandom = !_this.isRandom
+           randomBtn.classList.toggle('active',_this.isRandom)
+        }
+        // lặp lại bài
+        repeatBtn.onclick = function(e){
+            _this.isRepeat = !_this.isRepeat
+            repeatBtn.classList.toggle('active',_this.isRepeat)
+        }
+        // next nhạc khi kết thúc
+        audio.onended = function (){
+            if(_this.isRepeat){
+                audio.play()
+            }else{
+                nextBtn.click()
+            }
+        }
     },
     loadCurrentSong: function(){
         heading.textContent = this.currentSong.name
         cdThumb.style.backgroundImage =`url(${this.currentSong.image})`
         audio.src = this.currentSong.path
 
+    },
+    nextSong: function(){
+        this.currentIndex++
+        if (this.currentIndex >= this.songs.length){
+            this.currentIndex = 0
+        }
+        this.loadCurrentSong()
+    },
+    prevSong: function(){
+        this.currentIndex--
+        if (this.currentIndex < 0){
+            this.currentIndex = this.songs.length - 1
+        }
+        this.loadCurrentSong()
+    },
+    playRandomSong: function(){
+        let newIndex
+        do{
+            newIndex = Math.floor(Math.random() * this.songs.length)
+        } while (newIndex === this.currentIndex)
+        this.currentIndex = newIndex
+        this.loadCurrentSong()
     },
     start: function(){
         this.handleEvents()
