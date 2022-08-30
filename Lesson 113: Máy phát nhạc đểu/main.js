@@ -14,11 +14,42 @@ const app ={
     isPlaying: false,
     songs: [
         {
-            name: 'Cheatreal',
-            singer: 'T+pazolite',
-            path: './Music/y2mate.com - tpazolite  Cheatreal.mp3',
-            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+            name: 'Bookmaker',
+            singer: 'Kobaryo',
+            path: './Music/Bookmaker.mp3',
+            image: './img/kobaryo.png'
+        },  
+        {
+            name: 'Touhou 17.5: Reimu theme',
+            singer: 'Dự án đông phương',
+            path: './Music/reimutheme.mp3',
+            image: './img/256px-Th175_cover.jpg'
         },
+        {
+            name: 'Touhou 17.5: tittle',
+            singer: 'Dự án đông phương',
+            path: './Music/y2mate.com - Touhou 175 OST Title Screen.mp3',
+            image: './img/256px-Th175_cover.jpg'
+        },
+        {
+            name: 'Narwhal',
+            singer: 'Gray raven',
+            path: './Music/ghostfinal4.mp3',
+            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
+        },    
+        {
+            name: 'Punishing',
+            singer: 'Gray raven',
+            path: './Music/ghostfinal3.mp3',
+            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
+        },  
+        {
+            name: 'MISSION REPRISE',
+            singer: 'Higari minami',
+            path: './Music/MISSION REPRISE.mp3',
+            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
+        },  
+  
         {
             name: 'Hikari',
             singer: 'Gray raven',
@@ -31,7 +62,25 @@ const app ={
             path: './Music/ghostfinal2.mp3',
             image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
         },
-       
+        {
+            name: 'Homu',
+            singer: 'Higari minami',
+            path: './Music/Tadaima Hōmu.mp3',
+            image: './img/0.jpg'
+        },
+        {
+            name: 'Cheatreal',
+            singer: 'T+pazolite',
+            path: './Music/y2mate.com - tpazolite  Cheatreal.mp3',
+            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+        },
+         
+        {
+            name: 'Touhou 11: Koishi theme',
+            singer: 'T+pazolite',
+            path: './Music/y2mate.com - tpazolite  CENSORED.mp3',
+            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+        },
         {
             name: 'Baby dont cry',
             singer: 'kobasolo',
@@ -44,20 +93,7 @@ const app ={
             path: './Music/y2mate.com - Reupload東方ボーカル Fall In The Dark ShibayanRecordsSubbed.mp3',
             image: './img/68641819_p0_master1200.jpg'
         },
-        {
-            name: 'Touhou 17.5: tittle',
-            singer: 'Dự án đông phương',
-            path: './Music/y2mate.com - Touhou 175 OST Title Screen.mp3',
-            image: './img/256px-Th175_cover.jpg'
-        },
-        {
-            name: 'Touhou 11: Koishi theme',
-            singer: 'T+pazolite',
-            path: './Music/y2mate.com - tpazolite  CENSORED.mp3',
-            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
-        },
-    
-       
+          
     ],
     render: function(){
         const htmls = this.songs.map(song => {
@@ -87,6 +123,14 @@ const app ={
     handleEvents: function(){
         const cdWidth = cd.offsetWidth
         const _this = this
+        // đĩa nhạc quay
+        const cdThumbAnimate = cdThumb.animate([
+            {transform: 'rotate(360deg)'}
+        ], {
+            duration: 10000,
+            iterations: Infinity   
+        })
+        cdThumbAnimate.pause()
         // phóng to, thu nhỏ
         document.onscroll = function(){
             const scrollTop = window.scrollY
@@ -107,17 +151,25 @@ const app ={
         audio.onplay = function(){
             _this.isPlaying = true
             player.classList.add('playing')
+            cdThumbAnimate.play()
         }
         // khi nhạc dừng
         audio.onpause = function(){
             _this.isPlaying = false
             player.classList.remove('playing')
+             cdThumbAnimate.pause()
         }
         // khi tiến độ bài hát thay đổi
-        if(audio.duration){
-            const progress = Math.floor(audio.currentTime / audio.duration * 100)
-        }
         audio.ontimeupdate = function(){
+            if(audio.duration){
+                const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+                progress.value = progressPercent
+            }
+        }
+        // xử lý khi tua nhạc
+        progress.onchange = function(e){
+            const seekTime = audio.duration  / 100 * e.target.value 
+            audio.currentTime = seekTime
         }
     },
     loadCurrentSong: function(){

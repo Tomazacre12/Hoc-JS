@@ -131,6 +131,9 @@
     background-color: var(--primary-color);
     cursor: pointer;
   }
+  .progress:hover{
+    cursor: pointer;
+  }
   
   /* PLAYLIST */
   .playlist {
