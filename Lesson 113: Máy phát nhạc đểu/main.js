@@ -7,18 +7,30 @@ const heading = $('header h2')
 const cdThumb = $('.cd-thumb')
 const audio = $('#audio')
 const playBtn = $('.btn-toggle-play')
+const progress = $('#progress')
 
 const app ={
     currentIndex: 0,
     isPlaying: false,
     songs: [
-        
+        {
+            name: 'Cheatreal',
+            singer: 'T+pazolite',
+            path: './Music/y2mate.com - tpazolite  Cheatreal.mp3',
+            image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
+        },
         {
             name: 'Hikari',
             singer: 'Gray raven',
             path: './Music/y2mate.com - GhostFinalHIKARI Punishing Gray Raven OST  九龙环城 パニシンググレイレイヴンOfficial.mp3',
             image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
         }, 
+        {
+            name: 'Last Resort',
+            singer: 'Gray raven',
+            path: './Music/ghostfinal2.mp3',
+            image: './img/artworks-2e2yjwK2KjpmsV9C-RaidVg-t500x500.jpg'
+        },
        
         {
             name: 'Baby dont cry',
@@ -102,8 +114,10 @@ const app ={
             player.classList.remove('playing')
         }
         // khi tiến độ bài hát thay đổi
+        if(audio.duration){
+            const progress = Math.floor(audio.currentTime / audio.duration * 100)
+        }
         audio.ontimeupdate = function(){
-            console.log(audio.currentTime / audio.duration * 100)
         }
     },
     loadCurrentSong: function(){
