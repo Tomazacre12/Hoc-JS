@@ -36,10 +36,10 @@ const app ={
             image: './img/mons.jpg'
         },  
         {
-            name: 'Cửu Vĩ Hồ Ly',
-            singer: 'Yun x Dr A',
-            path: './Music/Cửu Vĩ Hồ Hồ Ly .mp3',
-            image: './img/fox.webp'
+            name: 'Beat eater',
+            singer: 'Police Piccadilly',
+            path: './Music/Beateater.mp3',
+            image: './img/beateater.jpg'
         }, 
         {
             name: 'kỳ kỳ - cindy thái hòa x playboi càri',
