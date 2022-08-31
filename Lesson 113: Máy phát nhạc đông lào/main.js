@@ -1,6 +1,8 @@
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 
+const PLAYER_STORAGE_KEY = 'F8_PLAYER'
+
 const player = $('.player')
 const cd = $('.cd')
 const heading = $('header h2')
@@ -12,25 +14,45 @@ const prevBtn = $('.btn-prev')
 const nextBtn = $('.btn-next')
 const randomBtn = $('.btn-random')
 const repeatBtn =$('.btn-repeat')
+const playList = $('.playlist')
 
 const app ={
     currentIndex: 0,
     isPlaying: false,
     isRandom: false,
     isRepeat: false,
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY))||{},
     songs: [
         {
-            name: 'Bass Slut',
-            singer: 'NSFW',
-            path: './Music/Bass Slut.mp3',
-            image: './img/bassslut.jpg'
-        },
+            name: 'Vị Thần Gọi Gió',
+            singer: 'Mons',
+            path: './Music/Vị Thần Gọi Gió.mp3.webm',
+            image: './img/mons.jpg'
+        },  
+        {
+            name: 'Hợp Đồng Với Quỷ',
+            singer: 'Mons',
+            path: './Music/Hợp Đồng Với Quỷ.mp3',
+            image: './img/mons.jpg'
+        },  
+        {
+            name: 'Cửu Vĩ Hồ Ly',
+            singer: 'Yun x Dr A',
+            path: './Music/Cửu Vĩ Hồ Hồ Ly .mp3',
+            image: './img/fox.webp'
+        }, 
         {
             name: 'kỳ kỳ - cindy thái hòa x playboi càri',
             singer: 'Trung Tâm Băng Đĩa Lậu Hải Ngoại',
             path: './Music/kỳ kỳ.mp3',
             image: './img/kyky.jpg'
         },  
+        {
+            name: 'Bass Slut',
+            singer: 'NSFW',
+            path: './Music/Bass Slut.mp3',
+            image: './img/bassslut.jpg'
+        },      
         {
             name: 'Bookmaker',
             singer: 'Kobaryo',
@@ -48,6 +70,12 @@ const app ={
             singer: 'Diversity',
             path: './Music/Out Of Control.mp3',
             image: './img/outofcontrol.jpg'
+        },
+        {
+            name: 'Black tiger sex machine',
+            singer: 'ENM',
+            path: './Music/blacktiger.mp3',
+            image: './img/blacktiger.png'
         },
         {
             name: 'W theme',
@@ -86,12 +114,6 @@ const app ={
             image: './img/maxresdefault.jpg'
         },
         {
-            name: 'Worlds End, Girls Rondo',
-            singer: 'Yo Kaze',
-            path: './Music/Asterisk.mp3',
-            image: './img/rondo.jpg'
-        },
-        {
             name: 'Owari No Seraph',
             singer: 'Owari No Seraph',
             path: './Music/Owari No Seraph Battle Theme.mp3',
@@ -110,6 +132,12 @@ const app ={
             image: './img/artworks-000528734847-3v7ajq-t500x500.jpg'
         },  
         {
+            name: 'Touhou 15: Junko theme - pure furies',
+            singer: 'Zun',
+            path: './Music/y2mate.com - Demetori  Pure Furies  Vengeance is Mine.mp3.webm',
+            image: './img/junko.png'
+        },  
+        {
             name: 'Touhou 6: Fall in the dark',
             singer: 'Alice Margatroid',
             path: './Music/y2mate.com - Reupload東方ボーカル Fall In The Dark ShibayanRecordsSubbed.mp3',
@@ -117,10 +145,14 @@ const app ={
         },
           
     ],
+    setConfig: function(key, value){
+        this.config[key] = value
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
+    },
     render: function(){
         const htmls = this.songs.map((song, index) => {
             return `
-                <div class="song ${index === this.currentIndex ? 'active' : ''}">
+                <div class="song ${index === this.currentIndex ? 'active' : ''}"data-index="${index}">
                     <div class="thumb" style="background-image: url('${song.image}')">
                     </div>
                     <div class="body">
@@ -202,6 +234,7 @@ const app ={
             }
             audio.play()
             _this.render()
+            _this.scrollToActiveSong()
         }
         // prev song
         prevBtn.onclick = function(){
@@ -212,15 +245,18 @@ const app ={
             }
             audio.play()
             _this.render()
+            _this.scrollToActiveSong()
         }
         // random song
         randomBtn.onclick = function(e){
             _this.isRandom = !_this.isRandom
+            _this.setConfig('isRandom', _this.isRandom)
            randomBtn.classList.toggle('active',_this.isRandom)
         }
-        // lặp lại bài
+        // loop song
         repeatBtn.onclick = function(e){
             _this.isRepeat = !_this.isRepeat
+            _this.setConfig('isRepeat', _this.isRepeat)
             repeatBtn.classList.toggle('active',_this.isRepeat)
         }
         // next nhạc khi kết thúc
@@ -231,12 +267,41 @@ const app ={
                 nextBtn.click()
             }
         }
+        // lắng nghe hành vi click vào playlist
+        playList.onclick = function(e){
+            const songNode = e.target.closest('.song:not(.active)')
+           if( songNode || e.target.closest('.option')){
+            // click vào song
+            if(songNode){
+                _this.currentIndex = Number(songNode.dataset.index)
+                _this.loadCurrentSong()
+                _this.render()
+                audio.play()
+            }
+            // click vào option
+            if(e.target.closest('.option')){
+
+            }
+           } 
+        }
+    },
+    scrollToActiveSong: function(){
+        setTimeout(()=>{
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }, 300)
     },
     loadCurrentSong: function(){
         heading.textContent = this.currentSong.name
         cdThumb.style.backgroundImage =`url(${this.currentSong.image})`
         audio.src = this.currentSong.path
 
+    },
+    loadConfig: function(){
+        this.isRandom =  this.config.isRandom
+        this.isRepeat =  this.config.isRepeat
     },
     nextSong: function(){
         this.currentIndex++
@@ -261,6 +326,8 @@ const app ={
         this.loadCurrentSong()
     },
     start: function(){
+        this.loadConfig()
+
         this.handleEvents()
 
         this.defineProperties()
@@ -268,6 +335,9 @@ const app ={
         this.loadCurrentSong()
 
         this.render()
+
+        randomBtn.classList.toggle('active',this.isRandom)
+        repeatBtn.classList.toggle('active',this.isRepeat)
     }
 }
 app.start()
